@@ -1,3 +1,3 @@
 # azure_environment
 New Azure Environment
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://github.com/leandroscardua/azure_environment/blob/master/Drawing2.jpg)
