@@ -86,13 +86,13 @@ $FQDNDNS ="training"
 $FQDNDomain = "$netbiosnamead.$FQDNDNS"
 $safemodepassword = "$defaultpass"
 $domainadmin = "testadmin"
-$UserName = "$netbiosnamead\$domainadmin"
+$UserNamedomainadmin = "$netbiosnamead\$domainadmin"
 $PWDDomainUser = "$defaultpass"
 $OUPath = "OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
 $OUPathAPP = "OU=APP,OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
 $OUPathWEBAPP = "OU=WEB,OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
 $SecurePassword = ConvertTo-SecureString $PWDDomainUser -AsPlainText -Force
-$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainadmin,$SecurePassword
+$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserNamedomainadmin,$SecurePassword
 $ASGName = ("$convname" + "-AS")
 $LBDatabase = ("$convname"+"DB-LB")
 # IPs In use #
