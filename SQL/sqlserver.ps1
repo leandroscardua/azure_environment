@@ -1,11 +1,11 @@
 Param (
-    [Parameter(Mandatory=$true)] [string] $VmAdminUsername,
-    [Parameter(Mandatory=$true)] [string] $VmAdminPassword,
-    [Parameter(Mandatory=$true)] [string] $SqlLoginUsername,
-    [Parameter(Mandatory=$true)] [string] $SqlLoginPassword,
-	[Parameter(Mandatory=$true)] [string] $SvcSecusername,
+    	[Parameter(Mandatory=$true)] [string] $VmAdminUsername,
+    	[Parameter(Mandatory=$true)] [string] $VmAdminPassword,
+    	[Parameter(Mandatory=$true)] [string] $SqlLoginUsername,
+    	[Parameter(Mandatory=$true)] [string] $SqlLoginPassword,
+ 	[Parameter(Mandatory=$true)] [string] $SvcSecusername,
 	[Parameter(Mandatory=$true)] [string] $SvcSecPassword,
-    [Parameter(Mandatory=$true)] [string] $UserNamedomainadmin
+    	[Parameter(Mandatory=$true)] [string] $UserNamedomainadmin
 )
 
 Install-PackageProvider -Name 'NuGet' -RequiredVersion '2.8.5.201' -Force
@@ -28,11 +28,11 @@ $secureSCVSecPassword = ConvertTo-SecureString -String $SvcSecPassword -AsPlainT
 # authentication only. We need to do this in the execution context of the VM administrator.
 Invoke-Command -ComputerName 'localhost' -Credential $vmAdminCredential -ArgumentList @($SqlLoginUsername, $SqlLoginPassword, $SvcSecusername, $SvcSecPassword, $UserNamedomainadmin) -ScriptBlock {
     Param (
-        [Parameter(Mandatory=$true)] [string] $SqlLoginUsername,
-        [Parameter(Mandatory=$true)] [string] $SqlLoginPassword,
+        	[Parameter(Mandatory=$true)] [string] $SqlLoginUsername,
+        	[Parameter(Mandatory=$true)] [string] $SqlLoginPassword,
 		[Parameter(Mandatory=$true)] [string] $SvcSecusername,
-        [Parameter(Mandatory=$true)] [string] $SvcSecPassword,
-        [Parameter(Mandatory=$true)] [string] $UserNamedomainadmin
+        	[Parameter(Mandatory=$true)] [string] $SvcSecPassword,
+        	[Parameter(Mandatory=$true)] [string] $UserNamedomainadmin
     )
     Invoke-Sqlcmd -ServerInstance 'localhost' -Database 'master' `
         -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2"
