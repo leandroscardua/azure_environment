@@ -81,12 +81,14 @@ $fileNamelinux = "users.sh"
 $subscription = $Id.Subscription.Id 
 $nsgnameinternal = ("$convname"+"-Internal-NSG")
 # Domain Credentials #
-$FQDNDomain = "leandro.traning"
+$FQDNDomain = "leandro.training"
+$netbiosnamead =leandro"
+$safemodepassword = "$defaultpass"
 $UserName = "leandro\testadmin"
 $PWDDomainUser = "$defaultpass"
-$OUPath = "OU=Servers,DC=leandro,DC=traning"
-$OUPathAPP = "OU=APP,OU=Servers,DC=leandro,DC=traning"
-$OUPathWEBAPP = "OU=WEB,OU=Servers,DC=leandro,DC=traning"
+$OUPath = "OU=Servers,DC=leandro,DC=training"
+$OUPathAPP = "OU=APP,OU=Servers,DC=leandro,DC=training"
+$OUPathWEBAPP = "OU=WEB,OU=Servers,DC=leandro,DC=training"
 $SecurePassword = ConvertTo-SecureString $PWDDomainUser -AsPlainText -Force
 $DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName,$SecurePassword
 $ASGName = ("$convname" + "-AS")
@@ -306,7 +308,8 @@ $VM = Set-AzureRmVMBootDiagnostics -Enable -ResourceGroupName $resourcegroupname
 New-AzureRmVM -Location $location -ResourceGroupName $resourcegroupname -VM $VM -Verbose
 
 #DC Promo
-Set-AzureRmVMCustomScriptExtension -Location $location -Name "Promotion" -VMName $VMName -ResourceGroupName $resourcegroupname -StorageAccountName $storageaccountname  -StorageAccountKey $storageAccountKey -ContainerName $storageContainer -FileName $fileNamepromote -Run $fileNamepromote
+Set-AzureRmVMCustomScriptExtension -Location $location -Name "Promotion" -VMName $VMName -ResourceGroupName $resourcegroupname -StorageAccountName $storageaccountname  -StorageAccountKey $storageAccountKey -ContainerName $storageContainer -FileName $fileNamepromote `
+ -Argument "-domainnamead $FQDNDomain -netbiosnamead $netbiosnamead -safemodepassword $safemodepassword"
 
 Start-Sleep -Seconds 300
 
