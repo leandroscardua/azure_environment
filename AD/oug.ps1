@@ -4,8 +4,9 @@ Param (
 	[Parameter(Mandatory=$true)] [string] $OUPath,
 	[Parameter(Mandatory=$true)] [string] $filegpourl,
 	[Parameter(Mandatory=$true)] [string] $defaultpass,
-	[Parameter(Mandatory=$true)] [string] $username,
-	[Parameter(Mandatory=$true)] [string] $usernamenumber
+	[Parameter(Mandatory=$true)] [string] $usernamead,
+	[Parameter(Mandatory=$true)] [string] $usernamenumber,
+	[Parameter(Mandatory=$true)] [string] $FQDNDomain
 )
 
 Import-Module ActiveDirectory
@@ -21,13 +22,13 @@ New-ADOrganizationalUnit -Name "Web" -Path "$OUPath"
 
 # Download the GPO to restore #
 
-New-Item -Path C:\backup -ItemType directory
+New-Item -Path C:\backupgpo -ItemType directory
 
 $Url = "$filegpourl"
 $Path = "C:\backup\gpo.zip"
 (New-Object System.Net.WebClient).DownloadFile($Url,$Path)
 
-Expand-Archive -Path C:\backup\gpo.zip -DestinationPath C:\backup\
+Expand-Archive -Path C:\backupgpo\gpo.zip -DestinationPath C:\backupgpo\
 
 ## Create new GPO and Restore the GPOs##
 
@@ -61,7 +62,7 @@ $pwd = "$defaultpass" | ConvertTo-SecureString -AsPlainText -Force
 New-ADUser `
     -Name "Leandro" `
     -SamAccountName 'leandro' `
-    -UserPrincipalName 'leandro@leandro.traning' `
+    -UserPrincipalName 'leandro@$FQDNDomain' `
     -AccountPassword $pwd `
     -Enabled $True
 Add-ADGroupMember -Identity "DBAdmin" -Members leandro
@@ -72,21 +73,19 @@ Create Service account
 New-ADUser `
     -Name "SvcSec" `
     -SamAccountName 'SvcSec' `
-    -UserPrincipalName 'SvcSec@leandro.traning' `
+    -UserPrincipalName 'SvcSec@$FQDNDomain' `
     -AccountPassword $pwd `
     -ChangePasswordAtLogon $false `
     -PasswordNeverExpires $true `
     -Enabled $True
 
-# Creation of "$username" users #
+# Creation of "$usernamead" users #
 
-$user="$username"
+$user="$usernamead"
 $pwd = "$defaultpass" | ConvertTo-SecureString -AsPlainText -Force
 $count=1..$usernamenumber
 foreach ($i in $count)
 { 
-New-AdUser -Name $user$i -SamAccountName $user$i -Enabled $True -AccountPassword $pwd -ChangePasswordAtLogon $false -UserPrincipalName $user$i@coris.traning -CannotChangePassword $true -PasswordNeverExpires $true
+New-AdUser -Name $user$i -SamAccountName $user$i -Enabled $True -AccountPassword $pwd -ChangePasswordAtLogon $false -UserPrincipalName $user$i@$FQDNDomain -CannotChangePassword $true -PasswordNeverExpires $true
 Add-ADGroupMember -Identity "DBAdmin" -Members $user$i
 }
-
-
