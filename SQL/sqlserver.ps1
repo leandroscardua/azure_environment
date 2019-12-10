@@ -49,7 +49,7 @@ Invoke-Command -ComputerName 'localhost' -Credential $vmAdminCredential -Argumen
 	Update-DbaServiceAccount -ComputerName localhost -ServiceName 'MSSQLSERVER','SQLSERVERAGENT' -Username $SvcSecusername -SecurePassword $secureSCVSecPassword -Confirm:$false
    
 }
-## add Fireall rules to enable remote access to SQL Server##
+# add Fireall rules to enable remote access to SQL Server##
 New-NetFirewallRule -DisplayName 'SQL Server' -Direction 'Inbound' -Protocol 'TCP' -LocalPort 1433 -Action 'Allow' -Profile 'Domain'
 New-NetFirewallRule -DisplayName 'SQL Admin Connection' -Direction 'Inbound' -Protocol 'TCP' -LocalPort 1434 -Action 'Allow' -Profile 'Domain'
 New-NetFirewallRule -DisplayName 'SQL Database Management' -Direction 'Inbound' -Protocol 'UDP' -LocalPort 1434 -Action 'Allow' -Profile 'Domain'
@@ -57,3 +57,5 @@ New-NetFirewallRule -DisplayName 'SQL Service Broker' -Direction 'Inbound' -Prot
 New-NetFirewallRule -DisplayName 'SQL Debugger/RPC' -Direction 'Inbound' -Protocol 'TCP' -LocalPort 135 -Action 'Allow' -Profile 'Domain'
 New-NetFirewallRule -DisplayName 'SQL Analysis Services' -Direction 'Inbound' -Protocol 'TCP' -LocalPort 2383 -Action 'Allow' -Profile 'Domain'
 New-NetFirewallRule -DisplayName 'SQL Browser' -Direction 'Inbound' -Protocol 'TCP' -LocalPort 2382 -Action 'Allow' -Profile 'Domain'
+
+#via https://anchorloop.com/2018/07/14/configure-sql-server-with-azure-vm-extensions/
