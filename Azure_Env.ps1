@@ -60,7 +60,7 @@ $officeip = "XXX.XXX.XXX.XXX" # Add your public Ip here, to allow the external a
 $rdsname = "rds"
 #Password of all user during the deployment will use this password and convention for the name ##
 $defaultpass = "enter a password here"
-$username ="leandro_user"
+$usernamead ="leandro_user"
 $usernamenumber = "5"
 
 $location = "eastus2" # Change the location base with your requirements
@@ -81,16 +81,18 @@ $fileNamelinux = "users.sh"
 $subscription = $Id.Subscription.Id 
 $nsgnameinternal = ("$convname"+"-Internal-NSG")
 # Domain Credentials #
-$FQDNDomain = "leandro.training"
-$netbiosnamead =leandro"
+$netbiosnamead ="leandro"
+$FQDNDNS ="training"
+$FQDNDomain = "$netbiosnamead.$FQDNDNS"
 $safemodepassword = "$defaultpass"
-$UserName = "$netbiosnamead\testadmin"
+$domainadmin = "testadmin"
+$UserName = "$netbiosnamead\$domainadmin"
 $PWDDomainUser = "$defaultpass"
-$OUPath = "OU=Servers,DC=leandro,DC=training"
-$OUPathAPP = "OU=APP,OU=Servers,DC=leandro,DC=training"
-$OUPathWEBAPP = "OU=WEB,OU=Servers,DC=leandro,DC=training"
+$OUPath = "OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
+$OUPathAPP = "OU=APP,OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
+$OUPathWEBAPP = "OU=WEB,OU=Servers,DC=$netbiosnamead,DC=$FQDNDNS"
 $SecurePassword = ConvertTo-SecureString $PWDDomainUser -AsPlainText -Force
-$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName,$SecurePassword
+$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainadmin,$SecurePassword
 $ASGName = ("$convname" + "-AS")
 $LBDatabase = ("$convname"+"DB-LB")
 # IPs In use #
@@ -106,7 +108,6 @@ $LocalAdmin = "testadmin"
 $GetPassword = "$defaultpass"
 $LocalSecurePassword = ConvertTo-SecureString $GetPassword -AsPlainText -Force
 $LocalCredential = New-Object -TypeName System.Management.Automation.PSCredential $LocalAdmin,$LocalSecurePassword
-$TimeZone = "Eastern Standard Time"
 #SQL Server #
 $SqlLoginUsername = "sa"
 $SqlLoginPassword = "$defaultpass"
@@ -123,6 +124,7 @@ $VMSizeWEBAPP = "Standard_DS13_v2_Promo"
 $VMSizeRDS = "Standard_DS13_v2_Promo"
 $VMSizeDC = "Standard_DS12_v2_Promo"
 $VMSizeBI = "Standard_DS13_v2_Promo"
+$TimeZone = "Eastern Standard Time"
 #Windows VM Database Information SKu,image and etc
 $OfferNameDB = "SQL2016SP2-WS2016"
 $PubNameDB = "MicrosoftSQLServer"
@@ -317,7 +319,7 @@ Remove-AzureRmVMExtension -Name "Promotion" -ResourceGroupName $resourcegroupnam
 
 #Create Users, Group and OU
 Set-AzureRmVMCustomScriptExtension -Location $location -Name "oug" -VMName $VMName -ResourceGroupName $resourcegroupname -StorageAccountName $storageaccountname  -StorageAccountKey $storageAccountKey -ContainerName $storageContainer -FileName $fileNameoug `
-    -Argument "-OUPathWEBAPP $OUPathWEBAPP -OUPathAPP $OUPathAPP -OUPath $OUPath -filegpourl $filegpourl -defaultpass $defaultpass -username $username -usernamenumber $usernamenumber"
+    -Argument "-OUPathWEBAPP $OUPathWEBAPP -OUPathAPP $OUPathAPP -OUPath $OUPath -filegpourl $filegpourl -defaultpass $defaultpass -usernamead $usernamead -usernamenumber $usernamenumber -FQDNDomain -$FQDNDomain"
 
 # Change VNET DNS to add the machines ont he domain #
 $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $resourcegroupname -name $vnetname
