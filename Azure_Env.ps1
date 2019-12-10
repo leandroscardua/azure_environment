@@ -84,7 +84,7 @@ $nsgnameinternal = ("$convname"+"-Internal-NSG")
 $FQDNDomain = "leandro.training"
 $netbiosnamead =leandro"
 $safemodepassword = "$defaultpass"
-$UserName = "leandro\testadmin"
+$UserName = "$netbiosnamead\testadmin"
 $PWDDomainUser = "$defaultpass"
 $OUPath = "OU=Servers,DC=leandro,DC=training"
 $OUPathAPP = "OU=APP,OU=Servers,DC=leandro,DC=training"
@@ -111,7 +111,7 @@ $TimeZone = "Eastern Standard Time"
 $SqlLoginUsername = "sa"
 $SqlLoginPassword = "$defaultpass"
 #SQL Server Service Account#
-$SvcSecusername = "leandro\svcsec"
+$SvcSecusername = "$netbiosnamead\svcsec"
 $SvcSecPassword = "$defaultpass"
 #Windows VM Applications and Operation Information SKu,image and etc
 $OfferNameWS = "WindowsServer"
