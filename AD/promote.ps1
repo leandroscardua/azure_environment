@@ -21,7 +21,7 @@ REG ADD HKLM\Software\FTCAD /v Data /t Reg_SZ /d "Installed"
 # Windows PowerShell script for AD DS Deployment
 $domainname = "$domainnamead" 
 $netbiosName = "$netbiosnamead" 
-$safemodepassword = "$safemodepassword" | ConvertTo-SecureString -AsPlainText -Force
+#$safemodepassword = "$safemodepassword" | ConvertTo-SecureString -AsPlainText -Force
 Import-Module ADDSDeployment
 Install-ADDSForest `
 -CreateDnsDelegation:$false `
